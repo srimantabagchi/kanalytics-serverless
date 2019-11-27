@@ -7,6 +7,29 @@ const ProfileSchema = new mongoose.Schema({
   },
   company: {
     type: String
+  },
+  files: [
+    {
+      title: {
+        type: String,
+        required: true
+      },
+      details: {
+        type: String,
+        required: true
+      },
+      location: {
+        type: String
+      }
+    }
+  ],
+  createdDate: {
+    type: Date,
+    default: Date.now
+  },
+  updatedDate: {
+    type: Date,
+    default: Date.now
   }
 });
 
