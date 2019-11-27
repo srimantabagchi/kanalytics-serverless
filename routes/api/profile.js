@@ -78,4 +78,75 @@ router.post(
   }
 );
 
+// @route    PUT api/profile/files
+// @desc     Add profile files
+// @access   Private
+router.put(
+  "/files",
+  [
+    auth,
+    [
+      check("title", "Title is required")
+        .not()
+        .isEmpty(),
+      check("details", "Details is required")
+        .not()
+        .isEmpty(),
+      check("location", "Location is required")
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, details, location } = req.body;
+
+    const newFile = {
+      title,
+      details,
+      location
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      profile.files.unshift(newFile);
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route    DELETE api/profile/files/:file_id
+// @desc     Delete experience from profile
+// @access   Private
+router.delete("/files/:file_id", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    // Get remove index
+    const removeIndex = profile.files
+      .map(item => item.id)
+      .indexOf(req.params.file_id);
+
+    profile.files.splice(removeIndex, 1);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
