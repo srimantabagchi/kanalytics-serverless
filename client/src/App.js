@@ -4,7 +4,7 @@ import Register from "./pages/register/register";
 import SignIn from "./pages/signin/signin";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import ResetPassword from "./pages/forgetpassword/resetpassword";
+import ResetPassword from "./pages/resetpassword/resetpassword";
 
 const App = () => (
   <Router>
