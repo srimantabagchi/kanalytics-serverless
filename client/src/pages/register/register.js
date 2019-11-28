@@ -1,99 +1,118 @@
-import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
-} from "react-router-dom";
+import React, { Fragment, useState } from "react";
+import { BrowserRouter as Route, Link } from "react-router-dom";
 import "./register.css";
 import SignIn from "../signin/signin";
 
-class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password2: ""
+  });
 
-  submitLogin(e) {}
+  const { name, email, password, password2 } = formData;
 
-  render() {
-    return (
-      <React.Fragment>
-        <div class='container'>
-          <div class='row'>
-            <div class='col-sm-9 col-md-7 col-lg-5 mx-auto'>
-              <div class='card card-signin flex-row my-5'>
-                <div class='card-body'>
-                  <h5 class='card-title text-center'>Register</h5>
-                  <form class='form-signin'>
-                    <div class='form-label-group'>
-                      <input
-                        type='text'
-                        id='inputUserame'
-                        class='form-control'
-                        placeholder='Username'
-                        required
-                        autofocus
-                      ></input>
-                      <label for='inputUserame'>Username</label>
-                    </div>
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-                    <div class='form-label-group'>
-                      <input
-                        type='email'
-                        id='inputEmail'
-                        class='form-control'
-                        placeholder='Email address'
-                        required
-                      ></input>
-                      <label for='inputEmail'>Email address</label>
-                    </div>
+  const onSubmit = e => {
+    e.preventDefault();
+    if (password !== password2) {
+      console.log("Passwords do not match");
+    } else {
+      console.log(formData);
+    }
+  };
 
-                    <hr></hr>
+  return (
+    <Fragment>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-sm-9 col-md-7 col-lg-5 mx-auto'>
+            <div className='card card-signin flex-row my-5'>
+              <div className='card-body'>
+                <h5 className='card-title text-center'>Register</h5>
+                <form className='form-signin' onSubmit={e => onSubmit(e)}>
+                  <div className='form-label-group'>
+                    <input
+                      type='text'
+                      id='inputUserame'
+                      className='form-control'
+                      placeholder='Username'
+                      name='name'
+                      value={name}
+                      onChange={e => onChange(e)}
+                      required
+                      autoFocus
+                    ></input>
+                    <label htmlFor='inputUserame'>Username</label>
+                  </div>
 
-                    <div class='form-label-group'>
-                      <input
-                        type='password'
-                        id='inputPassword'
-                        class='form-control'
-                        placeholder='Password'
-                        required
-                      ></input>
-                      <label for='inputPassword'>Password</label>
-                    </div>
+                  <div className='form-label-group'>
+                    <input
+                      type='email'
+                      id='inputEmail'
+                      className='form-control'
+                      placeholder='Email address'
+                      name='email'
+                      value={email}
+                      onChange={e => onChange(e)}
+                      required
+                    ></input>
+                    <label htmlFor='inputEmail'>Email address</label>
+                  </div>
 
-                    <div class='form-label-group'>
-                      <input
-                        type='password'
-                        id='inputConfirmPassword'
-                        class='form-control'
-                        placeholder='Password'
-                        required
-                      ></input>
-                      <label for='inputConfirmPassword'>Confirm password</label>
-                    </div>
+                  <hr></hr>
 
-                    <button
-                      class='btn btn-lg btn-primary btn-block text-uppercase'
-                      type='submit'
-                    >
-                      Register
-                    </button>
-                    <Link class='d-block text-center mt-2 small' to={`/`}>
-                      Sign In
-                    </Link>
-                  </form>
-                </div>
+                  <div className='form-label-group'>
+                    <input
+                      type='password'
+                      id='inputPassword'
+                      className='form-control'
+                      placeholder='Password'
+                      name='password'
+                      value={password}
+                      onChange={e => onChange(e)}
+                      required
+                    ></input>
+                    <label htmlFor='inputPassword'>Password</label>
+                  </div>
+
+                  <div className='form-label-group'>
+                    <input
+                      type='password'
+                      id='inputConfirmPassword'
+                      className='form-control'
+                      placeholder='Password'
+                      name='password2'
+                      value={password2}
+                      onChange={e => onChange(e)}
+                      required
+                    ></input>
+                    <label htmlFor='inputConfirmPassword'>
+                      Confirm password
+                    </label>
+                  </div>
+
+                  <button
+                    className='btn btn-lg btn-primary btn-block text-uppercase'
+                    type='submit'
+                  >
+                    Register
+                  </button>
+                  <Link className='d-block text-center mt-2 small' to={`/`}>
+                    Sign In
+                  </Link>
+                </form>
               </div>
             </div>
           </div>
-          <Route exact path='/' component={SignIn} />
         </div>
-      </React.Fragment>
-    );
-  }
-}
+        <Route exact path='/' component={SignIn} />
+      </div>
+    </Fragment>
+  );
+};
 
 export default Register;

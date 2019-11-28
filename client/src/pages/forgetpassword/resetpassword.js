@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "./resetpassword.css";
 
 class ResetPassword extends Component {
@@ -9,28 +9,28 @@ class ResetPassword extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <div class='container'>
-          <div class='row'>
-            <div class='col-sm-9 col-md-7 col-lg-5 mx-auto'>
-              <div class='card card-signin flex-row my-5'>
-                <div class='card-body'>
-                  <h5 class='card-title text-center'>Reset Password</h5>
-                  <form class='form-signin'>
-                    <div class='form-label-group'>
+      <Fragment>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-sm-9 col-md-7 col-lg-5 mx-auto'>
+              <div className='card card-signin flex-row my-5'>
+                <div className='card-body'>
+                  <h5 className='card-title text-center'>Reset Password</h5>
+                  <form className='form-signin'>
+                    <div className='form-label-group'>
                       <input
                         type='text'
                         id='inputUserame'
-                        class='form-control'
+                        className='form-control'
                         placeholder='Username'
                         required
-                        autofocus
+                        autoFocus
                       ></input>
-                      <label for='inputUserame'>Email Address</label>
+                      <label htmlFor='inputUserame'>Email Address</label>
                     </div>
 
                     <button
-                      class='btn btn-lg btn-primary btn-block text-uppercase'
+                      className='btn btn-lg btn-primary btn-block text-uppercase'
                       type='submit'
                     >
                       Send Reset Link
@@ -41,7 +41,7 @@ class ResetPassword extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
