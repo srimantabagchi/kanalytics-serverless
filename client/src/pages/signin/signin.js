@@ -1,10 +1,25 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import "./signin.css";
 import Register from "../register/register";
 import ResetPassword from "../resetpassword/resetpassword";
 
 const SignIn = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const { email, password } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = e => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <Fragment>
       <div className='container'>
@@ -13,13 +28,16 @@ const SignIn = () => {
             <div className='card card-signin my-5'>
               <div className='card-body'>
                 <h5 className='card-title text-center'>Sign In</h5>
-                <form className='form-signin'>
+                <form className='form-signin' onSubmit={e => onSubmit(e)}>
                   <div className='form-label-group'>
                     <input
                       type='email'
                       id='inputEmail'
                       className='form-control'
                       placeholder='Email address'
+                      name='email'
+                      value={email}
+                      onChange={e => onChange(e)}
                       required
                       autoFocus
                     ></input>
@@ -32,6 +50,9 @@ const SignIn = () => {
                       id='inputPassword'
                       className='form-control'
                       placeholder='Password'
+                      name='password'
+                      value={password}
+                      onChange={e => onChange(e)}
                       required
                     ></input>
                     <label htmlFor='inputPassword'>Password</label>
