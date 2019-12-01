@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Register from "./pages/register/register";
 import SignIn from "./pages/signin/signin";
+import Alert from "./layouts/Alert";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ResetPassword from "./pages/resetpassword/resetpassword";
