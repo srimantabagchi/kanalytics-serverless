@@ -4,12 +4,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
 
-const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
+const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
+  let username = "";
+  if (user != null && user !== undefined) {
+    username = user["name"];
+  }
   const authLinks = (
     <ul className='navbar-nav ml-auto'>
       <li>
         <Link className='nav-link' onClick={logout} to='/'>
-          Logout
+          Logout {username}
         </Link>
       </li>
     </ul>
