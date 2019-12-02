@@ -9,11 +9,13 @@ import ResetPassword from "./pages/resetpassword/resetpassword";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
+import Navbar from "./layouts/navbar";
 
 const App = () => (
   <Provider store={store}>
     <Router>
       <Fragment>
+        <Navbar />
         <div className='App'>
           <Route exact path='/' component={SignIn} />
           <Route path='/register' component={Register} />
