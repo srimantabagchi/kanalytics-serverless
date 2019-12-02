@@ -1,5 +1,8 @@
 import React, { Fragment } from "react";
+import { BrowserRouter as Route, Link } from "react-router-dom";
 import "./resetpassword.css";
+import SignIn from "../signin/signin";
+import Register from "../register/register";
 
 const ResetPassword = () => {
   return (
@@ -29,12 +32,24 @@ const ResetPassword = () => {
                   >
                     Send Reset Link
                   </button>
+                  <hr className='my-4'></hr>
+                  <Link className='d-block text-center mt-2 small' to={`/`}>
+                    Back to SignIn
+                  </Link>
+                  <Link
+                    className='d-block text-center mt-2 small'
+                    to={`/register`}
+                  >
+                    Register
+                  </Link>
                 </form>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Route path='/' component={SignIn} />
+      <Route path='/register' component={Register} />
     </Fragment>
   );
 };

@@ -1,7 +1,34 @@
 import React, { Fragment, useState } from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logout } from "../actions/auth";
 
-const Navbar = () => {
+const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
+  const authLinks = (
+    <ul className='navbar-nav ml-auto'>
+      <li>
+        <Link className='nav-link' onClick={logout} to='/'>
+          Logout
+        </Link>
+      </li>
+    </ul>
+  );
+
+  const guestLinks = (
+    <ul className='navbar-nav ml-auto'>
+      <li className='nav-item'>
+        <Link className='nav-link' to='/'>
+          Login
+        </Link>
+      </li>
+      <li className='nav-item'>
+        <Link className='nav-link' to='/register'>
+          Register
+        </Link>
+      </li>
+    </ul>
+  );
   return (
     <Fragment>
       <nav className='navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow'>
@@ -20,24 +47,22 @@ const Navbar = () => {
           >
             <span className='navbar-toggler-icon'></span>
           </button>
-          <div className='collapse navbar-collapse' id='navbarResponsive'>
-            <ul className='navbar-nav ml-auto'>
-              <li className='nav-item'>
-                <a className='nav-link' href='#'>
-                  Login
-                </a>
-              </li>
-              <li className='nav-item'>
-                <a className='nav-link' href='#'>
-                  Register
-                </a>
-              </li>
-            </ul>
-          </div>
+          {!loading && (
+            <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+          )}
         </div>
       </nav>
     </Fragment>
   );
 };
 
-export default Navbar;
+Navbar.propTypes = {
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { logout })(Navbar);
