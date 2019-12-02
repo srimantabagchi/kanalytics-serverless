@@ -7,7 +7,7 @@ const Navbar = () => {
       <nav className='navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow'>
         <div className='container'>
           <a className='navbar-brand' href='#'>
-            KANALYTICS
+            MY TEST APP
           </a>
           <button
             className='navbar-toggler'
