@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Route, Link, Redirect } from "react-router-dom";
 import "./register.css";
-import SignIn from "../signin/signin";
+import SignIn from "./signin";
 import { setAlert } from "../../actions/alert";
 import PropTypes from "prop-types";
 import { register } from "../../actions/auth";

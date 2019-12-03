@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { BrowserRouter as Route, Link, Redirect } from "react-router-dom";
 import "./signin.css";
-import Register from "../register/register";
-import ResetPassword from "../resetpassword/resetpassword";
+import Register from "./register";
+import ResetPassword from "./resetpassword";
 import { login } from "../../actions/auth";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";

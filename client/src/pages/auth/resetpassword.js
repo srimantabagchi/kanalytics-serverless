@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import "./resetpassword.css";
-import SignIn from "../signin/signin";
-import Register from "../register/register";
+import SignIn from "./signin";
+import Register from "./register";
 
 const ResetPassword = () => {
   return (
