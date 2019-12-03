@@ -5,7 +5,6 @@ import "./register.css";
 import SignIn from "../signin/signin";
 import { setAlert } from "../../actions/alert";
 import PropTypes from "prop-types";
-import Alert from "../../layouts/Alert";
 import { register } from "../../actions/auth";
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
@@ -37,7 +36,6 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   return (
     <Fragment>
       <div className='container'>
-        <Alert />
         <div className='row'>
           <div className='col-sm-9 col-md-7 col-lg-5 mx-auto'>
             <div className='card card-signin flex-row my-5'>

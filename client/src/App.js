@@ -12,6 +12,7 @@ import setAuthToken from "./utils/setAuthToken";
 import { Provider } from "react-redux";
 import store from "./store";
 import Navbar from "./layouts/navbar";
+import Alert from "./layouts/Alert";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -27,6 +28,7 @@ const App = () => {
         <Fragment>
           <Navbar />
           <div className='App'>
+            <Alert />
             <Route exact path='/' component={SignIn} />
             <Route path='/register' component={Register} />
             <Route path='/resetpassword' component={ResetPassword} />
