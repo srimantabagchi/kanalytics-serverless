@@ -1,10 +1,12 @@
 import React, { Fragment, useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Register from "./pages/auth/register";
-import SignIn from "./pages/auth/signin";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Register from "./components/auth/register";
+import SignIn from "./components/auth/signin";
+import Dashboard from "./components/dashboard/dashboard";
+import PrivateRoute from "./components/routing/privateroute";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import ResetPassword from "./pages/auth/resetpassword";
+import ResetPassword from "./components/auth/resetpassword";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 
@@ -29,9 +31,12 @@ const App = () => {
           <Navbar />
           <div className='App'>
             <Alert />
-            <Route exact path='/' component={SignIn} />
-            <Route path='/register' component={Register} />
-            <Route path='/resetpassword' component={ResetPassword} />
+            <Switch>
+              <Route exact path='/' component={SignIn} />
+              <Route path='/register' component={Register} />
+              <Route path='/resetpassword' component={ResetPassword} />
+              <PrivateRoute path='/dashboard' component={Dashboard} />
+            </Switch>
           </div>
         </Fragment>
       </Router>
