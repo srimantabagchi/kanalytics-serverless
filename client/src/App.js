@@ -35,7 +35,7 @@ const App = () => {
               <Route exact path='/' component={SignIn} />
               <Route path='/register' component={Register} />
               <Route path='/resetpassword' component={ResetPassword} />
-              <PrivateRoute path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/dashboard' component={Dashboard} />
             </Switch>
           </div>
         </Fragment>
