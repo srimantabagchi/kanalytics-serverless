@@ -1,9 +1,13 @@
-import { GET_PROFILE, PROFILE_ERROR } from "../actions/types";
+import {
+  GET_PROFILE,
+  PROFILE_ERROR,
+  ADD_FILE,
+  DELETE_FILE
+} from "../actions/types";
 
 const initialState = {
   profile: null,
   profiles: [],
-  repos: [],
   loading: true,
   error: {}
 };
@@ -13,6 +17,8 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case GET_PROFILE:
+    case ADD_FILE:
+    case DELETE_FILE:
       return {
         ...state,
         profile: payload,
