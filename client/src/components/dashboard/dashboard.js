@@ -10,6 +10,7 @@ const Dashboard = ({ getCurrentProfile, uploadFile, auth, profile }) => {
   }, []);
 
   const [file, setFile] = useState("");
+  const [description, setDescription] = useState("");
   const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});
   const [message, setMessage] = useState("");
@@ -20,14 +21,20 @@ const Dashboard = ({ getCurrentProfile, uploadFile, auth, profile }) => {
     setFilename(e.target.files[0].name);
   };
 
+  const onChangeDescription = e => {
+    setDescription(e.target.value);
+  };
+
   const onSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("file", file); // or "movieImg"
+    formData.append("file", file);
+    formData.append("filename", filename);
+    formData.append("description", description);
 
     try {
       console.log("stuff 1");
-      const res = await axios.post("https://file.io", formData, {
+      const res = await axios.post("/api/profile/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         },
@@ -40,6 +47,8 @@ const Dashboard = ({ getCurrentProfile, uploadFile, auth, profile }) => {
           setTimeout(() => setUploadPercentage(0), 5000);
         }
       });
+
+      console.log("stuff 2" + JSON.stringify(res));
 
       const { filename, filepath } = res.data;
       setUploadedFile({ filename, filepath });
@@ -56,8 +65,21 @@ const Dashboard = ({ getCurrentProfile, uploadFile, auth, profile }) => {
   return (
     <Fragment>
       <div className='container'>
-        {message ? <Message message={message} /> : null}
         <form onSubmit={onSubmit}>
+          <div className='form-label-group'>
+            <input
+              type='text'
+              id='inputDescription'
+              className='form-control'
+              placeholder='Description'
+              name='description'
+              value={description}
+              onChange={e => onChangeDescription(e)}
+              required
+              autoFocus
+            ></input>
+            <label htmlFor='inputDescription'>Description</label>
+          </div>
           <div className='custom-file mb-4'>
             <input
               type='file'

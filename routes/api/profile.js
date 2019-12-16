@@ -1,10 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
 const auth = require("../../middleware/auth");
-const { check, validationResult } = require("express-validator/check");
+const { check, validationResult } = require("express-validator");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+
+var upload = multer({ dest: "uploads/" });
 
 // @route    GET api/profile/me
 // @desc     Get current users profile
@@ -119,6 +123,38 @@ router.put(
       await profile.save();
 
       res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route    PUT api/profile/files
+// @desc     Add profile files
+// @access   Private
+router.post(
+  "/upload",
+  [
+    auth,
+    [
+      check("description", "Description is required")
+        .not()
+        .isLength({ min: 5 })
+    ],
+    upload.single("file")
+  ],
+  async (req, res) => {
+    // TODO Check validation
+    const errors = validationResult(req);
+    console.log("errors.array()" + JSON.stringify(errors.array()));
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    console.log("The req object is : " + JSON.stringify(req.body));
+    try {
+      res.status(200).send("Successfully here!");
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
