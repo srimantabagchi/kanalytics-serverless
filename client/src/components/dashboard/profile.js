@@ -2,12 +2,20 @@ import React, { useEffect, useState, Fragment, Message, Progress } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { connect } from "react-redux";
+import Files from "./files";
 import { getCurrentProfile, uploadFile } from "../../actions/profile";
 
-const Profile = ({ getCurrentProfile, uploadFile, auth, profile }) => {
+const Profile = ({
+  getCurrentProfile,
+  uploadFile,
+  auth,
+  profile: { profile, loading }
+}) => {
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
+
+  console.log("the profile object looks like: " + JSON.stringify(profile));
 
   const [file, setFile] = useState("");
   const [description, setDescription] = useState("");
@@ -33,7 +41,6 @@ const Profile = ({ getCurrentProfile, uploadFile, auth, profile }) => {
     formData.append("description", description);
 
     try {
-      console.log("stuff 1");
       const res = await axios.post("/api/profile/files", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
@@ -106,6 +113,14 @@ const Profile = ({ getCurrentProfile, uploadFile, auth, profile }) => {
           </div>
         ) : null}
       </div>
+      {profile !== null &&
+      profile.files !== null &&
+      profile.files !== undefined &&
+      profile.files.length > 0 ? (
+        <Fragment>
+          <Files files={profile.files} />
+        </Fragment>
+      ) : null}
     </Fragment>
   );
 };
