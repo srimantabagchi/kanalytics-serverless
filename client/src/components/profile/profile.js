@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { getCurrentProfile, uploadFile } from "../../actions/profile";
 
-const Dashboard = ({ getCurrentProfile, uploadFile, auth, profile }) => {
+const Profile = ({ getCurrentProfile, uploadFile, auth, profile }) => {
   useEffect(() => {
     getCurrentProfile();
   }, []);
@@ -110,7 +110,7 @@ const Dashboard = ({ getCurrentProfile, uploadFile, auth, profile }) => {
   );
 };
 
-Dashboard.propTypes = {
+Profile.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired
@@ -121,4 +121,4 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile })(Profile);

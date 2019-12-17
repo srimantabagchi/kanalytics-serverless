@@ -38,7 +38,7 @@ export const uploadFile = formData => async dispatch => {
 
     dispatch(setAlert("File Added", "success"));
 
-    // history.push("/dashboard");
+    // history.push("/profile");
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -71,7 +71,7 @@ export const addFiles = (formData, history) => async dispatch => {
 
     dispatch(setAlert("File Added", "success"));
 
-    history.push("/dashboard");
+    history.push("/profile");
   } catch (err) {
     const errors = err.response.data.errors;
 

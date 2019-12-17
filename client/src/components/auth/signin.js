@@ -24,7 +24,7 @@ const SignIn = ({ login, isAuthenticated }) => {
   };
 
   if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to='/profile' />;
   }
 
   return (
