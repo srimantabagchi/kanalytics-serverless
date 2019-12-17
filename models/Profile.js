@@ -34,13 +34,13 @@ const ProfileSchema = new mongoose.Schema({
       size: {
         type: String,
         required: true
+      },
+      createdDate: {
+        type: Date,
+        default: Date.now
       }
     }
-  ],
-  createdDate: {
-    type: Date,
-    default: Date.now
-  }
+  ]
 });
 
 module.exports = Profile = mongoose.model("profile", ProfileSchema);

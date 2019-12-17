@@ -37,41 +37,53 @@ const Profile = ({
   return (
     <Fragment>
       <div className='container'>
-        <form onSubmit={onSubmit}>
-          <div className='custom-file mb-4'>
-            <input
-              type='file'
-              className='custom-file-input'
-              id='customFile'
-              onChange={onChange}
-            />
-            <label className='custom-file-label' htmlFor='customFile'>
-              {filename}
-            </label>
-            <input
-              type='submit'
-              value='Upload'
-              className='btn btn-primary btn-block mt-4'
-            />
-          </div>
-        </form>
-        {uploadedFile ? (
-          <div className='row mt-5'>
-            <div className='col-md-6 m-auto'>
-              <h3 className='text-center'>{uploadedFile.filename}</h3>
-              <img style={{ width: "100%" }} src={uploadedFile.filepath} />
+        <div className='row'>
+          <div className='col-sm-9 col-md-7 col-lg-10 mx-auto'>
+            <div className='card card-signin flex-row my-10'>
+              <div className='card-body'>
+                <form onSubmit={onSubmit}>
+                  <div className='custom-file mb-4'>
+                    <input
+                      type='file'
+                      className='custom-file-input'
+                      id='customFile'
+                      onChange={onChange}
+                    />
+                    <label className='custom-file-label' htmlFor='customFile'>
+                      {filename}
+                    </label>
+                    <input
+                      type='submit'
+                      value='Upload'
+                      className='btn btn-primary btn-block mt-4'
+                    />
+                  </div>
+                </form>
+                {uploadedFile ? (
+                  <div className='row mt-5'>
+                    <div className='col-md-6 m-auto'>
+                      <h3 className='text-center'>{uploadedFile.filename}</h3>
+                      <img
+                        style={{ width: "100%" }}
+                        src={uploadedFile.filepath}
+                      />
+                    </div>
+                  </div>
+                ) : null}
+
+                {profile !== null &&
+                profile.files !== null &&
+                profile.files !== undefined &&
+                profile.files.length > 0 ? (
+                  <Fragment>
+                    <Files files={profile.files} />
+                  </Fragment>
+                ) : null}
+              </div>
             </div>
           </div>
-        ) : null}
+        </div>
       </div>
-      {profile !== null &&
-      profile.files !== null &&
-      profile.files !== undefined &&
-      profile.files.length > 0 ? (
-        <Fragment>
-          <Files files={profile.files} />
-        </Fragment>
-      ) : null}
     </Fragment>
   );
 };

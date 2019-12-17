@@ -9,6 +9,10 @@ const Files = ({ files, deleteFile }) => {
   const fileList = files.map(file => (
     <tr key={file._id}>
       <td>{file.originalname}</td>
+
+      <td>
+        <Moment format='YYYY/MM/DD'>{moment.utc(file.createdDate)}</Moment>
+      </td>
       <td>{file.mimetype}</td>
       <td>{file.size}</td>
       <td>
@@ -26,8 +30,9 @@ const Files = ({ files, deleteFile }) => {
         <thead>
           <tr>
             <th>Original Name</th>
-            <th className='hide-sm'>File Type</th>
-            <th className='hide-sm'>Size</th>
+            <th>Created Date</th>
+            <th>File Type</th>
+            <th>Size</th>
             <th />
           </tr>
         </thead>
