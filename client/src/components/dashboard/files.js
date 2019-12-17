@@ -5,14 +5,16 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { deleteFile } from "../../actions/profile";
 
-const Files = ({ files }) => {
+const Files = ({ files, deleteFile }) => {
   const fileList = files.map(file => (
     <tr key={file._id}>
       <td>{file.originalname}</td>
       <td>{file.mimetype}</td>
       <td>{file.size}</td>
       <td>
-        <button className='btn btn-danger'>Delete</button>
+        <button onClick={() => deleteFile(file._id)} className='btn btn-danger'>
+          Delete
+        </button>
       </td>
     </tr>
   ));
@@ -36,7 +38,8 @@ const Files = ({ files }) => {
 };
 
 Files.propTypes = {
-  files: PropTypes.array.isRequired
+  files: PropTypes.array.isRequired,
+  deleteFile: PropTypes.func.isRequired
 };
 
-export default connect(null)(Files);
+export default connect(null, { deleteFile })(Files);

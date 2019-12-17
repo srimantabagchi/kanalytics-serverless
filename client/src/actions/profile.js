@@ -20,40 +20,7 @@ export const getCurrentProfile = () => async dispatch => {
   }
 };
 
-// Add File External
-export const uploadFile = formData => async dispatch => {
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    };
-
-    const res = await axios.put("/api/profile/files", formData, config);
-
-    dispatch({
-      type: ADD_FILE,
-      payload: res.data
-    });
-
-    dispatch(setAlert("File Added", "success"));
-
-    // history.push("/profile");
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
-    }
-
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
-};
-
-// Add File
+// Upload File
 export const addFiles = (formData, history) => async dispatch => {
   try {
     const config = {
@@ -89,7 +56,7 @@ export const addFiles = (formData, history) => async dispatch => {
 // Delete File
 export const deleteFile = id => async dispatch => {
   try {
-    const res = await axios.delete(`/api/profile/file/${id}`);
+    const res = await axios.delete(`/api/profile/files/${id}`);
 
     dispatch({
       type: DELETE_FILE,
