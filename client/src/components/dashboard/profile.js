@@ -18,7 +18,6 @@ const Profile = ({
   console.log("the profile object looks like: " + JSON.stringify(profile));
 
   const [file, setFile] = useState("");
-  const [description, setDescription] = useState("");
   const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});
 
@@ -27,39 +26,18 @@ const Profile = ({
     setFilename(e.target.files[0].name);
   };
 
-  const onChangeDescription = e => {
-    setDescription(e.target.value);
-  };
-
   const onSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
     formData.append("filename", filename);
-    formData.append("description", description);
-    console.log("Am I coming here before?");
     addFiles(formData);
-    console.log("Am I coming here after?");
   };
 
   return (
     <Fragment>
       <div className='container'>
         <form onSubmit={onSubmit}>
-          <div className='form-label-group'>
-            <input
-              type='text'
-              id='inputDescription'
-              className='form-control'
-              placeholder='Description'
-              name='description'
-              value={description}
-              onChange={e => onChangeDescription(e)}
-              required
-              autoFocus
-            ></input>
-            <label htmlFor='inputDescription'>Description</label>
-          </div>
           <div className='custom-file mb-4'>
             <input
               type='file'
@@ -70,12 +48,12 @@ const Profile = ({
             <label className='custom-file-label' htmlFor='customFile'>
               {filename}
             </label>
+            <input
+              type='submit'
+              value='Upload'
+              className='btn btn-primary btn-block mt-4'
+            />
           </div>
-          <input
-            type='submit'
-            value='Upload'
-            className='btn btn-primary btn-block mt-4'
-          />
         </form>
         {uploadedFile ? (
           <div className='row mt-5'>

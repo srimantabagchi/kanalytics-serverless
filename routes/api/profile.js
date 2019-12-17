@@ -85,78 +85,63 @@ router.post(
 // @route    PUT api/profile/files
 // @desc     Add profile files
 // @access   Private
-router.post(
-  "/files",
-  [
-    auth,
-    [
-      check("description", "Description is required")
-        .not()
-        .isLength({ min: 5 })
-    ],
-    upload.single("file")
-  ],
-  async (req, res) => {
-    // TODO Check validation
-    console.log("req.file " + JSON.stringify(req.file));
-    const errors = validationResult(req);
-    console.log("errors.array()" + JSON.stringify(errors.array()));
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const {
-      originalname,
-      encoding,
-      mimetype,
-      destination,
-      filename,
-      path,
-      size
-    } = req.file;
-
-    const { description } = req.body;
-
-    const newFile = {
-      originalname,
-      encoding,
-      mimetype,
-      destination,
-      filename,
-      path,
-      size,
-      description
-    };
-
-    console.log("The req object is : " + JSON.stringify(req.body));
-    try {
-      let profile = await Profile.findOne({ user: req.user.id });
-
-      console.log("Profile is : " + profile);
-
-      if (profile) {
-        profile.files.unshift(newFile);
-
-        await profile.save();
-
-        return res.json(profile);
-      } else {
-        // Build profile object
-        const profileFields = {};
-        profileFields.user = req.user.id;
-
-        // Create
-        profile = new Profile(profileFields);
-        profile.files.unshift(newFile);
-
-        await profile.save();
-      }
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
+router.post("/files", [auth, upload.single("file")], async (req, res) => {
+  // TODO Check validation
+  console.log("req.file " + JSON.stringify(req.file));
+  const errors = validationResult(req);
+  console.log("errors.array()" + JSON.stringify(errors.array()));
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
-);
+
+  const {
+    originalname,
+    encoding,
+    mimetype,
+    destination,
+    filename,
+    path,
+    size
+  } = req.file;
+
+  const newFile = {
+    originalname,
+    encoding,
+    mimetype,
+    destination,
+    filename,
+    path,
+    size
+  };
+
+  console.log("The req object is : " + JSON.stringify(req.body));
+  try {
+    let profile = await Profile.findOne({ user: req.user.id });
+
+    console.log("Profile is : " + profile);
+
+    if (profile) {
+      profile.files.unshift(newFile);
+
+      await profile.save();
+
+      return res.json(profile);
+    } else {
+      // Build profile object
+      const profileFields = {};
+      profileFields.user = req.user.id;
+
+      // Create
+      profile = new Profile(profileFields);
+      profile.files.unshift(newFile);
+
+      await profile.save();
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 // @route    DELETE api/profile/files/:file_id
 // @desc     Delete experience from profile
