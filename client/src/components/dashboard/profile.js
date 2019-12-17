@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { connect } from "react-redux";
 import Files from "./files";
-import { getCurrentProfile, uploadFile } from "../../actions/profile";
+import { getCurrentProfile, addFiles } from "../../actions/profile";
 
 const Profile = ({
   getCurrentProfile,
-  uploadFile,
+  addFiles,
   auth,
   profile: { profile, loading }
 }) => {
@@ -21,8 +21,6 @@ const Profile = ({
   const [description, setDescription] = useState("");
   const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});
-  const [message, setMessage] = useState("");
-  const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const onChange = e => {
     setFile(e.target.files[0]);
@@ -39,34 +37,9 @@ const Profile = ({
     formData.append("file", file);
     formData.append("filename", filename);
     formData.append("description", description);
-
-    try {
-      const res = await axios.post("/api/profile/files", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
-        onUploadProgress: progressEvent => {
-          setUploadPercentage(
-            parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
-          );
-          setTimeout(() => setUploadPercentage(0), 5000);
-        }
-      });
-
-      console.log("stuff 2" + JSON.stringify(res));
-
-      const { filename, filepath } = res.data;
-      setUploadedFile({ filename, filepath });
-      setMessage("File uploaded");
-    } catch (err) {
-      if (err.response.status === 500) {
-        setMessage("there was a problem with the server.");
-      } else {
-        setMessage(err.response.data.message);
-      }
-    }
+    console.log("Am I coming here before?");
+    addFiles(formData);
+    console.log("Am I coming here after?");
   };
 
   return (
@@ -127,6 +100,7 @@ const Profile = ({
 
 Profile.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
+  addFiles: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired
 };
@@ -136,4 +110,6 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(Profile);
+export default connect(mapStateToProps, { getCurrentProfile, addFiles })(
+  Profile
+);

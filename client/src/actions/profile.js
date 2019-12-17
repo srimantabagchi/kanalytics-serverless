@@ -21,15 +21,9 @@ export const getCurrentProfile = () => async dispatch => {
 };
 
 // Upload File
-export const addFiles = (formData, history) => async dispatch => {
+export const addFiles = formData => async dispatch => {
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-
-    const res = await axios.put("/api/profile/files", formData, config);
+    const res = await axios.post("/api/profile/files", formData);
 
     dispatch({
       type: ADD_FILE,
@@ -37,8 +31,6 @@ export const addFiles = (formData, history) => async dispatch => {
     });
 
     dispatch(setAlert("File Added", "success"));
-
-    history.push("/profile");
   } catch (err) {
     const errors = err.response.data.errors;
 
