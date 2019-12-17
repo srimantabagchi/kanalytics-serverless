@@ -34,7 +34,7 @@ const Dashboard = ({ getCurrentProfile, uploadFile, auth, profile }) => {
 
     try {
       console.log("stuff 1");
-      const res = await axios.post("/api/profile/upload", formData, {
+      const res = await axios.post("/api/profile/files", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         },

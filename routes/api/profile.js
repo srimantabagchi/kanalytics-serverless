@@ -85,56 +85,8 @@ router.post(
 // @route    PUT api/profile/files
 // @desc     Add profile files
 // @access   Private
-router.put(
-  "/files",
-  [
-    auth,
-    [
-      check("title", "Title is required")
-        .not()
-        .isEmpty(),
-      check("details", "Details is required")
-        .not()
-        .isEmpty(),
-      check("location", "Location is required")
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { title, details, location } = req.body;
-
-    const newFile = {
-      title,
-      details,
-      location
-    };
-
-    try {
-      const profile = await Profile.findOne({ user: req.user.id });
-
-      profile.files.unshift(newFile);
-
-      await profile.save();
-
-      res.json(profile);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  }
-);
-
-// @route    PUT api/profile/files
-// @desc     Add profile files
-// @access   Private
 router.post(
-  "/upload",
+  "/files",
   [
     auth,
     [
@@ -146,15 +98,59 @@ router.post(
   ],
   async (req, res) => {
     // TODO Check validation
+    console.log("req.file " + JSON.stringify(req.file));
     const errors = validationResult(req);
     console.log("errors.array()" + JSON.stringify(errors.array()));
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const {
+      originalname,
+      encoding,
+      mimetype,
+      destination,
+      filename,
+      path,
+      size
+    } = req.file;
+
+    const { description } = req.body;
+
+    const newFile = {
+      originalname,
+      encoding,
+      mimetype,
+      destination,
+      filename,
+      path,
+      size,
+      description
+    };
+
     console.log("The req object is : " + JSON.stringify(req.body));
     try {
-      res.status(200).send("Successfully here!");
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      console.log("Profile is : " + profile);
+
+      if (profile) {
+        profile.files.unshift(newFile);
+
+        await profile.save();
+
+        return res.json(profile);
+      } else {
+        // Build profile object
+        const profileFields = {};
+        profileFields.user = req.user.id;
+
+        // Create
+        profile = new Profile(profileFields);
+        profile.files.unshift(newFile);
+
+        await profile.save();
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");

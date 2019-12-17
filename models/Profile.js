@@ -5,29 +5,39 @@ const ProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user"
   },
-  company: {
-    type: String
-  },
   files: [
     {
-      title: {
+      originalname: {
         type: String,
         required: true
       },
-      details: {
+      encoding: {
         type: String,
         required: true
       },
-      location: {
-        type: String
+      mimetype: {
+        type: String,
+        required: true
+      },
+      destination: {
+        type: String,
+        required: true
+      },
+      filename: {
+        type: String,
+        required: true
+      },
+      path: {
+        type: String,
+        required: true
+      },
+      size: {
+        type: String,
+        required: true
       }
     }
   ],
   createdDate: {
-    type: Date,
-    default: Date.now
-  },
-  updatedDate: {
     type: Date,
     default: Date.now
   }
