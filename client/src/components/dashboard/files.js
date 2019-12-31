@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import Moment from "react-moment";
 import moment from "moment";
 import { connect } from "react-redux";
-import { deleteFile } from "../../actions/profile";
+import { deleteFile, downloadFile } from "../../actions/profile";
 
-const Files = ({ files, deleteFile }) => {
+const Files = ({ files, deleteFile, downloadFile }) => {
   const fileList = files.map(file => (
     <tr key={file._id}>
       <td>{file.originalname}</td>
@@ -15,6 +15,14 @@ const Files = ({ files, deleteFile }) => {
       </td>
       <td>{file.mimetype}</td>
       <td>{file.size}</td>
+      <td>
+        <button
+          onClick={() => downloadFile(file._id, file.originalname)}
+          className='btn btn-danger'
+        >
+          Download
+        </button>
+      </td>
       <td>
         <button onClick={() => deleteFile(file._id)} className='btn btn-danger'>
           Delete
@@ -44,7 +52,8 @@ const Files = ({ files, deleteFile }) => {
 
 Files.propTypes = {
   files: PropTypes.array.isRequired,
-  deleteFile: PropTypes.func.isRequired
+  deleteFile: PropTypes.func.isRequired,
+  downloadFile: PropTypes.func.isRequired
 };
 
-export default connect(null, { deleteFile })(Files);
+export default connect(null, { deleteFile, downloadFile })(Files);

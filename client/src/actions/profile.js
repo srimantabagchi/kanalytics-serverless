@@ -1,7 +1,13 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 
-import { GET_PROFILE, PROFILE_ERROR, ADD_FILE, DELETE_FILE } from "./types";
+import {
+  GET_PROFILE,
+  PROFILE_ERROR,
+  ADD_FILE,
+  DELETE_FILE,
+  DOWNLOAD_FILE
+} from "./types";
 
 // Get current users profile
 export const getCurrentProfile = () => async dispatch => {
@@ -38,6 +44,31 @@ export const addFiles = formData => async dispatch => {
       errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     }
 
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Download File
+export const downloadFile = (id, fileName) => async dispatch => {
+  try {
+    console.log("Download File reached");
+    // const res = await axios.get(`/api/profile/files/${id}`);
+    const res = await axios({
+      url: `/api/profile/files/${id}`,
+      method: "GET",
+      responseType: "blob"
+    });
+    console.log("Download File reached" + JSON.stringify(res));
+    dispatch({
+      type: DOWNLOAD_FILE,
+      payload: res.data
+    });
+
+    dispatch(setAlert("File Downloaded", "success"));
+  } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }

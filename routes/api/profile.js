@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const stream = require("stream");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
@@ -82,7 +83,7 @@ router.post(
   }
 );
 
-// @route    PUT api/profile/files
+// @route    POST api/profile/files
 // @desc     Add profile files
 // @access   Private
 router.post("/files", [auth, upload.single("file")], async (req, res) => {
@@ -145,7 +146,7 @@ router.post("/files", [auth, upload.single("file")], async (req, res) => {
 });
 
 // @route    DELETE api/profile/files/:file_id
-// @desc     Delete experience from profile
+// @desc     Delete file from profile
 // @access   Private
 router.delete("/files/:file_id", auth, async (req, res) => {
   try {
@@ -161,6 +162,43 @@ router.delete("/files/:file_id", auth, async (req, res) => {
     await profile.save();
 
     res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    GET api/profile/files/:file_id
+// @desc     Download file from profile
+// @access   Private
+router.get("/files/:file_id", auth, async (req, res) => {
+  try {
+    console.log("Calling download file");
+    const profile = await Profile.findOne({ user: req.user.id });
+    console.log("Calling profile file: " + profile);
+    console.log("Calling req obj file: " + JSON.stringify(req.params));
+    const path = profile.files
+      .filter(item => item._id == req.params.file_id)
+      .map(item => item.path);
+    const fileName = profile.files
+      .filter(item => item._id == req.params.file_id)
+      .map(item => item.originalname);
+    const mimetype = profile.files
+      .filter(item => item._id == req.params.file_id)
+      .map(item => item.mimetype);
+    console.log("Calling profile path: " + path);
+
+    const downloadPath = profile.files.map(item => item.path);
+    console.log("Calling download file: " + downloadPath);
+    // res.download(path);
+    let fileContent = Buffer.from(path, "base64");
+    let readStream = new stream.PassThrough();
+    readStream.end(fileContent);
+
+    res.set("Content-disposition", "attachment; filename=" + fileName);
+    res.set("Content-type", mimetype.toString());
+
+    readStream.pipe(res);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
