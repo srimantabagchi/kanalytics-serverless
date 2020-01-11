@@ -4,6 +4,8 @@ import Moment from "react-moment";
 import moment from "moment";
 import { connect } from "react-redux";
 import { deleteFile, downloadFile } from "../../actions/profile";
+import axios from "axios";
+import FileSaver from "file-saver";
 
 const Files = ({ files, deleteFile, downloadFile }) => {
   const fileList = files.map(file => (
@@ -16,10 +18,7 @@ const Files = ({ files, deleteFile, downloadFile }) => {
       <td>{file.mimetype}</td>
       <td>{file.size}</td>
       <td>
-        <button
-          onClick={() => downloadFile(file._id, file.originalname)}
-          className='btn btn-danger'
-        >
+        <button onClick={() => onClick(file._id)} className='btn btn-danger'>
           Download
         </button>
       </td>
@@ -30,6 +29,19 @@ const Files = ({ files, deleteFile, downloadFile }) => {
       </td>
     </tr>
   ));
+
+  const onClick = async e => {
+    console.log("Download File reached" + e);
+    // const res = await axios.get(`/api/profile/files/${id}`);
+    const res = await axios({
+      url: `/api/profile/files/${e}`,
+      method: "GET",
+      responseType: "blob"
+    });
+    console.log("Download File reached" + JSON.stringify(res));
+    console.log("Download filename reached" + res.headers.filename);
+    FileSaver.saveAs(new Blob([res.data]), res.headers.filename);
+  };
 
   return (
     <Fragment>

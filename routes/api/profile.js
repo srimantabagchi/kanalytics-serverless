@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const mime = require("mime");
+const fs = require("fs");
 const stream = require("stream");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
@@ -177,28 +179,29 @@ router.get("/files/:file_id", auth, async (req, res) => {
     const profile = await Profile.findOne({ user: req.user.id });
     console.log("Calling profile file: " + profile);
     console.log("Calling req obj file: " + JSON.stringify(req.params));
-    const path = profile.files
-      .filter(item => item._id == req.params.file_id)
-      .map(item => item.path);
+    const file = path.join(
+      __dirname,
+      "/../../",
+      profile.files
+        .filter(item => item._id == req.params.file_id)
+        .map(item => item.path)
+        .toString()
+    );
+
+    console.log("Calling profile path: " + file);
+
     const fileName = profile.files
       .filter(item => item._id == req.params.file_id)
-      .map(item => item.originalname);
-    const mimetype = profile.files
-      .filter(item => item._id == req.params.file_id)
-      .map(item => item.mimetype);
-    console.log("Calling profile path: " + path);
+      .map(item => item.originalname)
+      .toString();
+    const mimetype = mime.lookup(file);
 
-    const downloadPath = profile.files.map(item => item.path);
-    console.log("Calling download file: " + downloadPath);
-    // res.download(path);
-    let fileContent = Buffer.from(path, "base64");
-    let readStream = new stream.PassThrough();
-    readStream.end(fileContent);
+    res.setHeader("Content-disposition", "attachment");
+    res.setHeader("filename", fileName);
+    res.setHeader("Content-type", mimetype);
 
-    res.set("Content-disposition", "attachment; filename=" + fileName);
-    res.set("Content-type", mimetype.toString());
-
-    readStream.pipe(res);
+    const filestream = fs.createReadStream(file);
+    filestream.pipe(res);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
